@@ -18,3 +18,7 @@ export const navbarContent = {
 	],
 	Kids: "Kids",
 };
+export const commonButtons = {
+	play: "Play",
+	moreInfo: "More Info",
+};
