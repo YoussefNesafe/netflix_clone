@@ -1,11 +1,32 @@
 import Banner from "@/components/Banner";
 import Navbar from "@/components/Navbar";
+import RowMovie from "@/components/RowMovie";
+import { commons } from "@/locales/en";
 import { Movie } from "@/typings";
 import requests from "@/utils/requests";
-import type { NextPage } from "next";
 import Head from "next/head";
 
-const Home = () => {
+interface Props {
+	netflixOriginals: Movie[];
+	trendingNow: Movie[];
+	topRated: Movie[];
+	actionMovies: Movie[];
+	comedyMovies: Movie[];
+	horrorMovies: Movie[];
+	romanceMovies: Movie[];
+	documentaries: Movie[];
+}
+
+const Home = ({
+	netflixOriginals,
+	actionMovies,
+	comedyMovies,
+	documentaries,
+	horrorMovies,
+	romanceMovies,
+	topRated,
+	trendingNow,
+}: Props) => {
 	return (
 		<div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
 			<Head>
@@ -15,6 +36,15 @@ const Home = () => {
 			<Navbar />
 			<main className="relative pb-24 pl-4 lg:space-y-24 lg:pl-16 ">
 				<Banner />
+				<section className="md:space-y-24">
+					<RowMovie title={commons.tredingNow} movies={trendingNow} />
+					<RowMovie title={commons.topRated} movies={topRated} />
+					<RowMovie title={commons.action} movies={actionMovies} />
+					<RowMovie title={commons.comedies} movies={comedyMovies} />
+					<RowMovie title={commons.horror} movies={horrorMovies} />
+					<RowMovie title={commons.romance} movies={romanceMovies} />
+					<RowMovie title={commons.documentaries} movies={documentaries} />
+				</section>
 			</main>
 		</div>
 	);

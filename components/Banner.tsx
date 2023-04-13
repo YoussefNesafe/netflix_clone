@@ -5,7 +5,7 @@ import { Movie } from "@/typings";
 import DynamicImage from "@/utils/DynamicImage";
 import { FaPlay } from "react-icons/fa";
 import { HiInformationCircle } from "react-icons/hi";
-import { commonButtons } from "@/locales/en";
+import { commons } from "@/locales/en";
 const Banner = () => {
 	const { netflixOriginals } = useAppProps();
 	const [movie, setMovie] = useState<Movie | null>(null);
@@ -32,11 +32,11 @@ const Banner = () => {
 			<div className="flex space-x-3">
 				<button className="text-black bg-white bannerButton">
 					<FaPlay className="w-4 h-4 text-black md:h-7 md:w-7" />
-					{commonButtons.play}
+					{commons.play}
 				</button>
 
 				<button className="bannerButton bg-[gray]/70" onClick={() => {}}>
-					<HiInformationCircle className="w-5 h-5 md:h-8 md:w-8" /> {commonButtons.moreInfo}
+					<HiInformationCircle className="w-5 h-5 md:h-8 md:w-8" /> {commons.moreInfo}
 				</button>
 			</div>
 		</div>

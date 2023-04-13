@@ -18,7 +18,15 @@ export const navbarContent = {
 	],
 	Kids: "Kids",
 };
-export const commonButtons = {
+export const commons = {
 	play: "Play",
 	moreInfo: "More Info",
+	tredingNow: "Trending Now",
+	topRated: "Top Rated",
+	action: "Action Thrillers",
+	myList: "My List",
+	comedies: "Comedies",
+	horror: "Horror Movies",
+	romance: "Romance Movies",
+	documentaries: "Documentaries",
 };
