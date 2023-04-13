@@ -18,7 +18,7 @@ const Navbar = () => {
 		<header className={`${isScrolled && "bg-[#141414]"}`}>
 			<div className="flex items-center space-x-2 md:space-x-10 ">
 				<Image
-					src="/netflix-logo.png"
+					src="/public/netflix-logo.png"
 					width={100}
 					height={100}
 					className="object-contain cursor-pointer"
