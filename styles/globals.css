@@ -18,4 +18,32 @@
   .headerLink{
     @apply cursor-pointer text-sm font-light text-[#e5e5e5] transition duration-[.4s] hover:text-[#b3b3b3]
   }
+  .bannerButton {
+    @apply flex items-center gap-x-2 rounded px-5 py-1.5 text-sm font-semibold transition hover:opacity-75 md:py-2.5 md:px-8 md:text-xl;
+  }
+}
+.scrollbar-hide::-webkit-scrollbar{
+  display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-image: linear-gradient(to bottom, rgb(17 ,24 ,39 , 0.1) , #010511);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(220 ,38 ,38);
+  border-radius: 4px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #f00;
 }

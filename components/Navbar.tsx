@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { navbarContent } from "@/locales/en/navbar";
+import { navbarContent } from "@/locales/en";
 import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 import Link from "next/link";
 import { useEffect, useState } from "react";
