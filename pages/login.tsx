@@ -12,19 +12,20 @@ type Inputs = {
 const Login = () => {
 	const [login, setLogin] = useState(false);
 	const { signIn, signUp } = useAuth();
+	const [formLoading, setFormLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<Inputs>();
 	const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-		console.log({ login });
-
+		setFormLoading(true);
 		if (login) {
 			await signIn(email, password);
 		} else {
 			await signUp(email, password);
 		}
+		setFormLoading(false);
 	};
 
 	return (
@@ -77,11 +78,14 @@ const Login = () => {
 					</label>
 				</div>
 				<button
-					className="w-full rounded bg-[#E50914] py-3 font-semibold"
+					className={`w-full rounded bg-[#E50914] py-3 font-semibold ${
+						formLoading ? "bg-red-300" : ""
+					}`}
 					onClick={() => setLogin(true)}
 					type="submit"
+					disabled={formLoading}
 				>
-					Sign In
+					{formLoading ? "Loading..." : "Sign In"}
 				</button>
 				<div className="text-[gray]">
 					New to Netflix?{" "}
