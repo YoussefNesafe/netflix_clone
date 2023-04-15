@@ -1,4 +1,5 @@
 import PageHeader from "@/components/PageHeader";
+import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -10,14 +11,20 @@ type Inputs = {
 
 const Login = () => {
 	const [login, setLogin] = useState(false);
+	const { signIn, signUp } = useAuth();
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<Inputs>();
 	const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-		// login? await signIn(email, password) : await signUp(email,password)
+		console.log({ login });
+
+		if (login) {
+			await signIn(email, password);
+		} else {
+			await signUp(email, password);
+		}
 	};
 
 	return (
@@ -46,7 +53,7 @@ const Login = () => {
 						<input
 							type="email"
 							placeholder="Email"
-							className={`input`}
+							className={`input ${errors.email && "border-b-2 border-orange-500"}`}
 							{...register("email", { required: true })}
 						/>
 						{errors.email && (
@@ -58,11 +65,10 @@ const Login = () => {
 					<label className="inline-block w-full">
 						<input
 							type="password"
-							placeholder="Password"
-							className={`input`}
 							{...register("password", { required: true })}
+							placeholder="Password"
+							className={`input ${errors.password && "border-b-2 border-orange-500"}`}
 						/>
-
 						{errors.password && (
 							<p className="p-1 text-[13px] font-light  text-orange-500">
 								Your password must contain between 4 and 60 characters.
@@ -71,14 +77,19 @@ const Login = () => {
 					</label>
 				</div>
 				<button
-					className="w-full rounded bg-[#E50914] hover:bg-red-700 transition-all duration-400 py-3 font-semibold"
+					className="w-full rounded bg-[#E50914] py-3 font-semibold"
+					onClick={() => setLogin(true)}
 					type="submit"
 				>
 					Sign In
 				</button>
 				<div className="text-[gray]">
 					New to Netflix?{" "}
-					<button className="text-white cursor-pointer hover:underline" type="submit">
+					<button
+						className="text-white cursor-pointer hover:underline"
+						onClick={() => setLogin(false)}
+						type="submit"
+					>
 						Sign up now
 					</button>
 				</div>

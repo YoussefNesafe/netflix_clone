@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { auth } from "../firebase";
 import AuthContext from "@/context/authContext";
+import { handleErrorMsg } from "@/utils/handleErrors";
 
 interface AuthProviderProps {
 	children: React.ReactNode;
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				router.push("/");
 				setLoading(false);
 			})
-			.catch((error) => alert(error.message))
+			.catch((error) => alert(handleErrorMsg(error.message)))
 			.finally(() => setLoading(false));
 	};
 
@@ -61,7 +62,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				router.push("/");
 				setLoading(false);
 			})
-			.catch((error) => alert(error.message))
+			.catch((error) => alert(handleErrorMsg(error.message)))
 			.finally(() => setLoading(false));
 	};
 
