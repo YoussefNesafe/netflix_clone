@@ -1,10 +1,14 @@
+import { modalState } from "@/atoms/modalAtom";
 import Banner from "@/components/Banner";
+import Modal from "@/components/Modal";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
 import RowMovie from "@/components/RowMovie";
+import useAuth from "@/hooks/useAuth";
 import { commons } from "@/locales/en";
 import { Movie } from "@/typings";
 import requests from "@/utils/requests";
-import Head from "next/head";
+import { useRecoilValue } from "recoil";
 
 interface Props {
 	netflixOriginals: Movie[];
@@ -27,12 +31,13 @@ const Home = ({
 	topRated,
 	trendingNow,
 }: Props) => {
+	const { loading } = useAuth();
+	const showModal = useRecoilValue(modalState);
+
+	if (loading) return null;
 	return (
 		<div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
-			<Head>
-				<title>Home - Netflix</title>
-				<link rel="icon" href="/favicon.png" />
-			</Head>
+			<PageHeader title="Home - Netflix" />
 			<Navbar />
 			<main className="relative pb-24 pl-4 lg:space-y-24 lg:pl-16 ">
 				<Banner />
@@ -46,6 +51,7 @@ const Home = ({
 					<RowMovie title={commons.documentaries} movies={documentaries} />
 				</section>
 			</main>
+			{showModal && <Modal />}
 		</div>
 	);
 };
