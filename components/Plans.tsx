@@ -5,9 +5,17 @@ import Link from "next/link";
 import React from "react";
 import { commons, plansPage } from "@/locales/en";
 import List from "@/components/List";
+import { Product } from "@stripe/firestore-stripe-payments";
+import { useState } from "react";
+import Table from "./Table";
 
-const Plans = () => {
+interface Props {
+	products: Product[];
+}
+
+const Plans = ({ products }: Props) => {
 	const { logout, user } = useAuth();
+	const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2]);
 
 	return (
 		<div>
@@ -30,11 +38,19 @@ const Plans = () => {
 				<List list={plansPage.list} title={plansPage.title} />
 				<div className="flex flex-col mt-4 space-y-4">
 					<div className="flex items-center self-end justify-end w-full md:w-3/5">
-						<div className={`planBox`}>Standard</div>
-						<div className={`planBox`}>Standard</div>
-						<div className={`planBox`}>Standard</div>
+						{products.map((product) => (
+							<div
+								className={`planBox ${
+									selectedPlan?.id === product.id ? "opacity-100" : "opacity-60"
+								}`}
+								key={product.id}
+								onClick={() => setSelectedPlan(product)}
+							>
+								{product.name}
+							</div>
+						))}
 					</div>
-					{/* <Table /> */}
+					<Table products={products} selectedPlan={selectedPlan} />
 					<button
 						className={`mx-auto w-11/12 rounded bg-[#E50914] py-4 text-xl shadow hover:bg-[#f6121d] md:w-[420px] `}
 						onClick={() => {}}
