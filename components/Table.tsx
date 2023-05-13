@@ -5,67 +5,74 @@ interface Props {
 	products: Product[];
 	selectedPlan: Product | null;
 }
+interface TableRowProps {
+	title: string;
+	children: React.ReactNode;
+}
+interface TableColumnProps {
+	content: any;
+	isSelectedPlan: boolean;
+}
+const TableRow = ({ title, children }: TableRowProps) => {
+	return (
+		<tr className="tableRow">
+			<td className="tableDataTitle">{title}</td>
+			{children}
+		</tr>
+	);
+};
+const TableColumn = ({ content, isSelectedPlan }: TableColumnProps) => {
+	return (
+		<td className={`tableDataFeature ${isSelectedPlan ? "text-[#E50914]" : "text-[gray]"}`}>
+			{content}
+		</td>
+	);
+};
 
 function Table({ products, selectedPlan }: Props) {
 	return (
 		<table>
 			<tbody className="divide-y divide-[gray]">
-				<tr className="tableRow">
-					<td className="tableDataTitle">Monthly price</td>
+				<TableRow title="Monthly price">
 					{products.map((product) => (
-						<td
-							className={`tableDataFeature ${
-								selectedPlan?.id === product.id ? "text-[#E50914]" : "text-[gray]"
-							}`}
+						<TableColumn
 							key={product.id}
-						>
-							AED{product.prices[0].unit_amount! / 100}
-						</td>
+							content={`AED${product.prices[0].unit_amount! / 100}`}
+							isSelectedPlan={selectedPlan?.id === product.id}
+						/>
 					))}
-				</tr>
-				<tr className="tableRow">
-					<td className="tableDataTitle">Video quality</td>
+				</TableRow>
+				<TableRow title="Video quality">
 					{products.map((product) => (
-						<td
-							className={`tableDataFeature ${
-								selectedPlan?.id === product.id ? "text-[#E50914]" : "text-[gray]"
-							}`}
+						<TableColumn
 							key={product.id}
-						>
-							{product.metadata.videoQuality}
-						</td>
+							content={product.metadata.videoQuality}
+							isSelectedPlan={selectedPlan?.id === product.id}
+						/>
 					))}
-				</tr>
-				<tr className="tableRow">
-					<td className="tableDataTitle">Resolution</td>
+				</TableRow>
+				<TableRow title="Resolution">
 					{products.map((product) => (
-						<td
-							className={`tableDataFeature ${
-								selectedPlan?.id === product.id ? "text-[#E50914]" : "text-[gray]"
-							}`}
+						<TableColumn
 							key={product.id}
-						>
-							{product.metadata.resolution}
-						</td>
+							content={product.metadata.resolution}
+							isSelectedPlan={selectedPlan?.id === product.id}
+						/>
 					))}
-				</tr>
-				<tr className="tableRow">
-					<td className="tableDataTitle">
-						Watch on your TV, computer, mobile phone and tablet
-					</td>
+				</TableRow>
+				<TableRow title="Watch on your TV, computer, mobile phone and tablet">
 					{products.map((product) => (
-						<td
-							className={`tableDataFeature ${
-								selectedPlan?.id === product.id ? "text-[#E50914]" : "text-[gray]"
-							}`}
+						<TableColumn
 							key={product.id}
-						>
-							{product.metadata.portability === "true" && (
-								<BsCheck2 className="inline-block w-8 h-8" />
-							)}
-						</td>
+							content={
+								product.metadata.portability === "true" && (
+									<BsCheck2 className="inline-block w-8 h-8" />
+								)
+							}
+							isSelectedPlan={selectedPlan?.id === product.id}
+						/>
 					))}
-				</tr>
+				</TableRow>
 			</tbody>
 		</table>
 	);
