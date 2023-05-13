@@ -29,4 +29,13 @@ export const commons = {
 	horror: "Horror Movies",
 	romance: "Romance Movies",
 	documentaries: "Documentaries",
+	signOut: "Sign Out",
+};
+export const plansPage = {
+	title: "Choose the plan that's right for you",
+	list: [
+		"Watch all you want. Ad-free.",
+		" Recommendations just for you.",
+		"Change or cancel your plan anytime.",
+	],
 };
