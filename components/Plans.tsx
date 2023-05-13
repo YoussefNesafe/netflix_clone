@@ -8,6 +8,8 @@ import List from "@/components/List";
 import { Product } from "@stripe/firestore-stripe-payments";
 import { useState } from "react";
 import Table from "./Table";
+import { loadCheckout } from "@/lib/stripe";
+import Loader from "./Loader";
 
 interface Props {
 	products: Product[];
@@ -16,7 +18,12 @@ interface Props {
 const Plans = ({ products }: Props) => {
 	const { logout, user } = useAuth();
 	const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2]);
-
+	const [isBillingLoading, setBillingLoading] = useState(false);
+	const subscribeToPlan = () => {
+		if (!user) return;
+		loadCheckout(selectedPlan?.prices[0].id!);
+		setBillingLoading(true);
+	};
 	return (
 		<div>
 			<PageHeader title="Plans - Netflix" />
@@ -52,10 +59,11 @@ const Plans = ({ products }: Props) => {
 					</div>
 					<Table products={products} selectedPlan={selectedPlan} />
 					<button
+						disabled={!selectedPlan || isBillingLoading}
 						className={`mx-auto w-11/12 rounded bg-[#E50914] py-4 text-xl shadow hover:bg-[#f6121d] md:w-[420px] `}
-						onClick={() => {}}
+						onClick={subscribeToPlan}
 					>
-						Subscribe
+						{isBillingLoading ? <Loader color="dark:fill-gray-300" /> : "Subscribe"}
 					</button>
 				</div>
 			</main>

@@ -4,7 +4,7 @@ import Modal from "@/components/Modal";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import RowMovie from "@/components/RowMovie";
-import Plans from "@/components/plans";
+import Plans from "@/components/Plans";
 import useAuth from "@/hooks/useAuth";
 import payments from "@/lib/stripe";
 import { commons } from "@/locales/en";
