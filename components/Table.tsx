@@ -1,5 +1,6 @@
 import { BsCheck2 } from "react-icons/bs";
 import { Product } from "@stripe/firestore-stripe-payments";
+import { IoMdClose } from "react-icons/io";
 
 interface Props {
 	products: Product[];
@@ -65,8 +66,10 @@ function Table({ products, selectedPlan }: Props) {
 						<TableColumn
 							key={product.id}
 							content={
-								product.metadata.portability === "true" && (
+								product.metadata.portability === "true" ? (
 									<BsCheck2 className="inline-block w-8 h-8" />
+								) : (
+									<IoMdClose className="inline-block w-8 h-8" />
 								)
 							}
 							isSelectedPlan={selectedPlan?.id === product.id}
