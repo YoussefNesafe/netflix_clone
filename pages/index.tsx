@@ -11,8 +11,8 @@ import { commons } from "@/locales/en";
 import { Movie } from "@/typings";
 import requests from "@/utils/requests";
 import { Product, getProducts } from "@stripe/firestore-stripe-payments";
-import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
+import useSubscription from "@/hooks/useSubscription";
 
 interface Props {
 	netflixOriginals: Movie[];
@@ -37,10 +37,9 @@ const Home = ({
 	trendingNow,
 	products,
 }: Props) => {
-	const { loading } = useAuth();
+	const { loading, user } = useAuth();
 	const showModal = useRecoilValue(modalState);
-	const { push } = useRouter();
-	const subscription = false;
+	const subscription = useSubscription(user);
 	if (loading || subscription === null) return null;
 	if (!subscription) return <Plans products={products} />;
 	return (
