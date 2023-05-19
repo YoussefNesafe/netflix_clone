@@ -2,9 +2,10 @@ import { Movie } from "../typings";
 import DynamicImage from "@/utils/DynamicImage";
 import { useRecoilState } from "recoil";
 import { modalState, movieState } from "@/atoms/modalAtom";
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-	movie: Movie;
+	movie: Movie | DocumentData;
 }
 
 const Thumbnail = ({ movie }: Props) => {
