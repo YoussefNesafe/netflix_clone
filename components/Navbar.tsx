@@ -38,16 +38,15 @@ const Navbar = () => {
 				<AiOutlineSearch className="hidden w-6 h-6 sm:inline" />
 				<p className="hidden lg:inline">{Kids}</p>
 				<AiFillBell className="w-6 h-6" />
-				{/* <Link href="/account"> */}
-				<Image
-					src="/assets/account-img.png"
-					alt="Account image"
-					className="rounded cursor-pointer"
-					width={30}
-					height={30}
-					onClick={logout}
-				/>
-				{/* </Link> */}
+				<Link href="/account">
+					<Image
+						src="/assets/account-img.png"
+						alt="Account image"
+						className="rounded cursor-pointer"
+						width={30}
+						height={30}
+					/>
+				</Link>
 			</div>
 		</header>
 	);
