@@ -3,12 +3,11 @@ import { navbarContent } from "@/locales/en";
 import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useAuth from "@/hooks/useAuth";
+import BasicMenu from "./BasicMenu";
 
 const Navbar = () => {
 	const { links, Kids } = navbarContent;
 	const [isScrolled, setIsScrolled] = useState(false);
-	const { logout } = useAuth();
 	const handleScroll = () => {
 		window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false);
 	};
@@ -26,6 +25,7 @@ const Navbar = () => {
 					className="object-contain cursor-pointer"
 					alt="netflix logo"
 				/>
+				<BasicMenu />
 				<ul className="hidden space-x-4 md:flex">
 					{links.map(({ title }, index) => (
 						<li key={index} className="headerLink">
