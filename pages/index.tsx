@@ -13,6 +13,7 @@ import requests from "@/utils/requests";
 import { Product, getProducts } from "@stripe/firestore-stripe-payments";
 import { useRecoilValue } from "recoil";
 import useSubscription from "@/hooks/useSubscription";
+import useList from "@/hooks/useList";
 
 interface Props {
 	netflixOriginals: Movie[];
@@ -40,6 +41,7 @@ const Home = ({
 	const { loading, user } = useAuth();
 	const showModal = useRecoilValue(modalState);
 	const subscription = useSubscription(user);
+	const list = useList(user?.uid);
 	if (loading || subscription === null) return null;
 	if (!subscription) return <Plans products={products} />;
 	return (
@@ -49,6 +51,7 @@ const Home = ({
 			<main className="relative pb-24 pl-4 lg:space-y-24 lg:pl-16 ">
 				<Banner />
 				<section className="md:space-y-24">
+					{list.length > 0 && <RowMovie title={commons.myList} movies={list} />}
 					<RowMovie title={commons.tredingNow} movies={trendingNow} />
 					<RowMovie title={commons.topRated} movies={topRated} />
 					<RowMovie title={commons.action} movies={actionMovies} />

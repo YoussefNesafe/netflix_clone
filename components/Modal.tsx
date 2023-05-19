@@ -1,26 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AiOutlinePlus } from "react-icons/ai";
-import { IoCloseOutline } from "react-icons/io5";
-import { HiOutlineHandThumbUp } from "react-icons/hi2";
-import { HiOutlineVolumeOff, HiOutlineVolumeUp } from "react-icons/hi";
-import { BsCheck2 } from "react-icons/bs";
-
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "@/atoms/modalAtom";
 import ReactPlayer from "react-player/lazy";
 import { FaPlay } from "react-icons/fa";
-import { Element, Genre } from "../typings";
+import { Element, Genre, Movie } from "../typings";
 import MuiModal from "@mui/material/Modal";
+import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import useAuth from "../hooks/useAuth";
+import toast, { Toaster } from "react-hot-toast";
+import { modalState, movieState } from "@/atoms/modalAtom";
+import { BsCheck2 } from "react-icons/bs";
+import { AiFillLike, AiOutlinePlus } from "react-icons/ai";
+import { HiOutlineVolumeOff, HiOutlineVolumeUp } from "react-icons/hi";
+import { IoCloseOutline } from "react-icons/io5";
 
 function Modal() {
 	const [movie, setMovie] = useRecoilState(movieState);
-	const [showModal, setShowModal] = useRecoilState(modalState);
-
 	const [trailer, setTrailer] = useState("");
+	const [showModal, setShowModal] = useRecoilState(modalState);
 	const [muted, setMuted] = useState(true);
 	const [genres, setGenres] = useState<Genre[]>([]);
 	const [addedToList, setAddedToList] = useState(false);
+	const { user } = useAuth();
+	const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
+
+	const toastStyle = {
+		background: "white",
+		color: "black",
+		fontWeight: "bold",
+		fontSize: "16px",
+		padding: "15px",
+		borderRadius: "9999px",
+		maxWidth: "1000px",
+	};
 
 	useEffect(() => {
 		if (!movie) return;
@@ -48,7 +61,45 @@ function Modal() {
 	const handleClose = () => {
 		setShowModal(false);
 		setMovie(null);
+		toast.dismiss();
 	};
+
+	// Find all the movies in the user's list
+	useEffect(() => {
+		if (user) {
+			return onSnapshot(collection(db, "customers", user.uid, "myList"), (snapshot) =>
+				setMovies(snapshot.docs)
+			);
+		}
+	}, [db, movie?.id]);
+
+	// Check if the movie is already in the user's list
+	useEffect(
+		() => setAddedToList(movies.findIndex((result) => result.data().id === movie?.id) !== -1),
+		[movies]
+	);
+
+	const handleList = async () => {
+		if (addedToList) {
+			await deleteDoc(doc(db, "customers", user!.uid, "myList", movie?.id.toString()!));
+
+			toast(`${movie?.title || movie?.original_name} has been removed from My List`, {
+				duration: 3000,
+				style: toastStyle,
+			});
+		} else {
+			await setDoc(doc(db, "customers", user!.uid, "myList", movie?.id.toString()!), {
+				...movie,
+			});
+
+			toast(`${movie?.title || movie?.original_name} has been added to My List.`, {
+				duration: 3000,
+				style: toastStyle,
+			});
+		}
+	};
+
+	console.log(addedToList);
 
 	return (
 		<MuiModal
@@ -57,6 +108,7 @@ function Modal() {
 			className="fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide"
 		>
 			<>
+				<Toaster position="bottom-center" />
 				<button
 					className="modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]"
 					onClick={handleClose}
@@ -79,7 +131,7 @@ function Modal() {
 								<FaPlay className="text-black h-7 w-7" />
 								Play
 							</button>
-							<button className="modalButton">
+							<button className="modalButton" onClick={handleList}>
 								{addedToList ? (
 									<BsCheck2 className="h-7 w-7" />
 								) : (
@@ -87,10 +139,10 @@ function Modal() {
 								)}
 							</button>
 							<button className="modalButton">
-								<HiOutlineHandThumbUp className="w-6 h-6" />
+								<AiFillLike className="w-6 h-6" />
 							</button>
 						</div>
-						<button className="modalButton" onClick={() => setMuted((prev) => !prev)}>
+						<button className="modalButton" onClick={() => setMuted(!muted)}>
 							{muted ? (
 								<HiOutlineVolumeOff className="w-6 h-6" />
 							) : (

@@ -3,12 +3,11 @@ import { navbarContent } from "@/locales/en";
 import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useAuth from "@/hooks/useAuth";
+import BasicMenu from "./BasicMenu";
 
 const Navbar = () => {
 	const { links, Kids } = navbarContent;
 	const [isScrolled, setIsScrolled] = useState(false);
-	const { logout } = useAuth();
 	const handleScroll = () => {
 		window.scrollY > 0 ? setIsScrolled(true) : setIsScrolled(false);
 	};
@@ -26,6 +25,7 @@ const Navbar = () => {
 					className="object-contain cursor-pointer"
 					alt="netflix logo"
 				/>
+				<BasicMenu />
 				<ul className="hidden space-x-4 md:flex">
 					{links.map(({ title }, index) => (
 						<li key={index} className="headerLink">
@@ -38,16 +38,15 @@ const Navbar = () => {
 				<AiOutlineSearch className="hidden w-6 h-6 sm:inline" />
 				<p className="hidden lg:inline">{Kids}</p>
 				<AiFillBell className="w-6 h-6" />
-				{/* <Link href="/account"> */}
-				<Image
-					src="/assets/account-img.png"
-					alt="Account image"
-					className="rounded cursor-pointer"
-					width={30}
-					height={30}
-					onClick={logout}
-				/>
-				{/* </Link> */}
+				<Link href="/account">
+					<Image
+						src="/assets/account-img.png"
+						alt="Account image"
+						className="rounded cursor-pointer"
+						width={30}
+						height={30}
+					/>
+				</Link>
 			</div>
 		</header>
 	);
